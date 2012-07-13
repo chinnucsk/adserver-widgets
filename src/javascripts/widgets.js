@@ -10,13 +10,17 @@
 			width: '300px',
 			height: '220px',
 			placement: 'http://adsearch.adkontekst.pl/_/ads0/?QAPS_AKPL=--6347-106877-#10811--&noChache=uvw04y',
-			distanceTop: '900px'
+			distanceTop: '900px',
+			title: "REKLAMY"
 		};
 		
 		var options = $.extend(defaults, options); 
     
     // Build widget HTML
-		$('body').append("<div class='adk-fixed' id='adk-fixed'><div class='adk-top'><div class='close'></div><div class='adk-title'>REKLAMA</div></div><div class='adk-adcode'></div></div>");
+		$('body').append("<div class='adk-fixed' id='adk-fixed'><div class='adk-top'><div class='close'></div><div class='adk-title'></div></div><div class='adk-adcode'></div></div>");
+
+	// Set widget title
+    $(".adk-title").html( options["title"] );
 
     var widget = $('.adk-fixed');
 		
