@@ -45,7 +45,7 @@ Slide Out placement have several parameters that you can use to customize the us
 * width - placement width in pixels (default: "300px")
 * height - placement height in pixels (default: "220px")
 * title - text that will be shown in placement header (default: "REKLAMY")
-* distanceTop - distance from page top in pixels on which placement will be shown (defualt
+* distanceTop - distance from page top in pixels on which placement will be shown (default: "900px")
 * placement - URL to one of nscontext compatible placement scripts
 
 ## Need help ?
