@@ -39,14 +39,15 @@
 		script.setAttribute("src", options["placement"]); 
 		document.getElementsByClassName('adk-adcode')[0].appendChild(script);
 		var on_scroll = function() {
-		      var distanceTop = parseInt( options['distanceTop']) - $(window).height();
-		      if(distanceTop < 0 ) distanceTop = parseInt( options['distanceTop']);
+      var distanceTop = parseInt( options['distanceTop']);
 
-		      if  ($(window).scrollTop() > distanceTop || distanceTop == 0 )
-			widget.animate({'right': 0 },300);
-		      else
-			widget.stop(true).animate({'right':'-'+options['width']},100);
-
+      if( $(window).scrollTop() > distanceTop || 
+          distanceTop == 0  || 
+          $(window).height() === $(document).height() ) {
+        widget.animate({'right': 0 },300);
+      } else {
+        widget.stop(true).animate({'right':'-'+options['width']},100);
+      }
 		};
     // Show widget on certain page height
 		$(window).scroll( on_scroll );
