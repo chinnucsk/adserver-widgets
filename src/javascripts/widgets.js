@@ -37,7 +37,7 @@
 		var script = document.createElement("script"); 
 		script.setAttribute("type", "text/javascript"); 
 		script.setAttribute("src", options["placement"]); 
-		document.getElementsByClassName('adk-adcode')[0].appendChild(script);
+		$('.adk-adcode')[0].appendChild(script);
 		var on_scroll = function() {
       var distanceTop = parseInt( options['distanceTop']);
 

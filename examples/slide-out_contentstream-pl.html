@@ -7,6 +7,8 @@
 		<script type="text/javascript" src="widgets.js" ></script>
 		<script type="text/javascript">
 			//<![CDATA[
+      jQuery.noConflict();
+      (function($){
 			$(document).ready( function() {
 				$().ns_slideout({
 					width: '245px',
@@ -15,6 +17,7 @@
 					distanceTop: '200px'
 				});
 			});
+      })(jQuery);
 			//]]>
 		</script>
  	</head>
