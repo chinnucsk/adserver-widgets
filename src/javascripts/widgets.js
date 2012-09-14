@@ -1,6 +1,6 @@
 /*
 
-  nsContext widgets - ver 0.05
+  nsContext widgets - ver 0.06
 
 */ 
 (function($) {  
@@ -18,12 +18,12 @@
 		var options = $.extend(defaults, options); 
     
     // Build widget HTML
-		$('body').append("<div class='adk-fixed' id='adk-fixed'><div class='adk-top'><div class='close'></div><div class='adk-title'></div></div><div class='adk-adcode'></div></div>");
+		var widget = $("<div class='adk-fixed'><div class='adk-top'><div class='close'></div><div class='adk-title'></div></div><div class='adk-adcode'></div></div>");
+    $('body').append(widget); 
 
 	// Set widget title
-    $(".adk-title").html( options["title"] );
+    widget.find(".adk-title").html( options["title"] );
 
-    var widget = $('.adk-fixed');
 
     // Set Class name for different positions
     widget.addClass( "adk-position-"+options["position"] )
@@ -36,13 +36,13 @@
 		widget.css( options['position'],  "-"+options['width'] );
 
     // Remove widget on Close Button click
-		widget.find('.close').click(function(){ $(".adk-fixed").remove(); });
+		widget.find('.close').click(function(){ $(this).closest(".adk-fixed").remove(); });
 
     // Insert Ad Script
 		var script = document.createElement("script"); 
 		script.setAttribute("type", "text/javascript"); 
 		script.setAttribute("src", options["placement"]); 
-		$('.adk-adcode')[0].appendChild(script);
+		widget.find('.adk-adcode')[0].appendChild(script);
 
 		var on_scroll = function() {
       var distanceTop = parseInt( options['distanceTop']);
