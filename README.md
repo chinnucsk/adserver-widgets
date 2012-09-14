@@ -20,16 +20,16 @@ Also in head configure the placement:
       //<![CDATA[
         jQuery.noConflict();
         (function($) {
-        $(document).ready( function() {
-          $().ns_slideout({
-            width: '300px',
-            title: "Ciekawe artykuły z sieci",
-            height: '220px',
-            placement: 'http://emisja.contentstream.pl/_/ads1/?QAPS_ADART=9468f1f6243d00fb8e5477d6ec2de786',
-            distanceTop: '1600px',
-            position: 'right'
-          });
-        });
+            $(document).ready( function() {
+              $().ns_slideout({
+                width: '300px',
+                title: "Ciekawe artykuły z sieci",
+                height: '220px',
+                placement: 'http://emisja.contentstream.pl/_/ads1/?QAPS_ADART=9468f1f6243d00fb8e5477d6ec2de786',
+                distanceTop: '1600px',
+                position: 'right'
+              });
+            });
         })(jQuery);
       //]]>
     </script>
