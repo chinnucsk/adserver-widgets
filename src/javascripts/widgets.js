@@ -1,10 +1,46 @@
 /*
 
-  nsContext widgets - ver 0.06
+  nsContext widgets - ver 0.07
 
 */ 
 (function($) {  
 	$.fn.ns_slideout = function(options) {
+
+    /* Cookie Manager */ 
+    var cookie = new (function() {
+      var set = function(value) {
+        var exdate = new Date();
+        exdate.setDate( exdate.getDate() + 1 );
+        var c_value = escape(value) + "; expires="+exdate.toUTCString();
+        document.cookie = "counter=" + c_value;
+      };
+      var get = function() {
+        var val = null;
+        /* w3c cookie managment implementation */
+        var i,x,y,ARRcookies=document.cookie.split(";");
+        for (i=0;i<ARRcookies.length;i++)
+        {
+          x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+          y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+          x=x.replace(/^\s+|\s+$/g,"");
+          if (x=="counter") {
+            val = unescape(y);
+          }
+        }
+        return val
+      };   
+      this.ban = function () {
+        set( 5 )
+      };
+      this.canShow = function () {
+        var counter = Number( get() )
+        if( counter > 0 ) {
+          set( -- counter )
+          return false;
+        }
+        return true;
+      };
+    });
 
 		var defaults = {
 			width: '300px',
@@ -19,8 +55,13 @@
     
     // Build widget HTML
 		var widget = $("<div class='adk-fixed'><div class='adk-top'><div class='close'></div><div class='adk-title'></div></div><div class='adk-adcode'></div></div>");
-    $('body').append(widget); 
-
+		
+		// dont show if user dont want to see
+		if( cookie.canShow() ) {
+      $('body').append(widget); 
+    } else {
+      return this;
+    }
 	// Set widget title
     widget.find(".adk-title").html( options["title"] );
 
@@ -36,7 +77,10 @@
 		widget.css( options['position'],  "-"+options['width'] );
 
     // Remove widget on Close Button click
-		widget.find('.close').click(function(){ $(this).closest(".adk-fixed").remove(); });
+		widget.find('.close').click( function(){ 
+		  cookie.ban()
+		  $(this).closest(".adk-fixed").remove(); 
+		});
 
     // Insert Ad Script
 		var script = document.createElement("script"); 
