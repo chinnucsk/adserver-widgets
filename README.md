@@ -27,7 +27,8 @@ Also in head configure the placement:
                 height: '220px',
                 placement: 'http://emisja.contentstream.pl/_/ads1/?QAPS_ADART=9468f1f6243d00fb8e5477d6ec2de786',
                 distanceTop: '1600px',
-                position: 'right'
+                position: 'right',
+                bannedShows: 5
               });
             });
         })(jQuery);
@@ -52,6 +53,7 @@ Slide Out placement have several parameters that you can use to customize the us
 * distanceTop - distance from page top in pixels on which placement will be shown (default: "900px")
 * placement - URL to one of nscontext compatible placement scripts
 * position - right or left side of the website (default: "right")
+* bannedShows - how many shows should be ommited after user click the X button (default: 0)
 
 ## Need help ?
 

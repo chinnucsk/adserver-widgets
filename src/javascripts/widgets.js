@@ -5,9 +5,21 @@
 */ 
 (function($) {  
 	$.fn.ns_slideout = function(options) {
+    var defaults = {
+			width: '300px',
+			height: '220px',
+			placement: 'http://adsearch.adkontekst.pl/_/ads0/?QAPS_AKPL=--6347-106877-#10811--&noChache=uvw04y',
+			distanceTop: '900px',
+			title: "REKLAMY",
+      position: "right",
+      bannedShows: 0
+		};
+		
+		var options = $.extend(defaults, options); 
+
 
     /* Cookie Manager */ 
-    var cookie = new (function() {
+    var cookie = new (function(shows) {
       var set = function(value) {
         var exdate = new Date();
         exdate.setDate( exdate.getDate() + 1 );
@@ -30,7 +42,7 @@
         return val
       };   
       this.ban = function () {
-        set( 5 )
+        set( shows )
       };
       this.canShow = function () {
         var counter = Number( get() )
@@ -40,18 +52,8 @@
         }
         return true;
       };
-    });
-
-		var defaults = {
-			width: '300px',
-			height: '220px',
-			placement: 'http://adsearch.adkontekst.pl/_/ads0/?QAPS_AKPL=--6347-106877-#10811--&noChache=uvw04y',
-			distanceTop: '900px',
-			title: "REKLAMY",
-      position: "right"
-		};
+    })( options["bannedShows"] );
 		
-		var options = $.extend(defaults, options); 
     
     // Build widget HTML
 		var widget = $("<div class='adk-fixed'><div class='adk-top'><div class='close'></div><div class='adk-title'></div></div><div class='adk-adcode'></div></div>");
