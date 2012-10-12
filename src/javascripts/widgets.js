@@ -23,7 +23,7 @@
       var set = function(value) {
         var exdate = new Date();
         exdate.setDate( exdate.getDate() + 1 );
-        var c_value = escape(value) + "; expires="+exdate.toUTCString();
+        var c_value = escape(value) + "; path=/; expires="+exdate.toUTCString();
         document.cookie = "counter=" + c_value;
       };
       var get = function() {
