@@ -1,4 +1,4 @@
-nscontext-widgets
+adserver-widgets
 =================
 
 Website widgets
@@ -6,7 +6,7 @@ Website widgets
 
 ## Usage 
 
-In website HEAD load all require resources: jquery, stylesheets and nscontext-widgets.
+In website HEAD load all require resources: jquery, stylesheets and adserver-widgets.
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" href="http://www.nscontext.com/widgets/style.css" />
@@ -57,4 +57,4 @@ Slide Out placement have several parameters that you can use to customize the us
 
 ## Need help ?
 
-Contact us anytime: contact [at] nscontext [dot] com
+Contact us anytime: adserver [at] netsprint [dot] eu
