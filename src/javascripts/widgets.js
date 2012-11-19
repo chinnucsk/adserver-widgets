@@ -5,6 +5,8 @@
 */ 
 (function($) {  
 	$.fn.ns_slideout = function(options) {
+    "use strict";
+
     var defaults = {
 			width: '300px',
 			height: '220px',
@@ -64,7 +66,7 @@
     } else {
       return this;
     }
-	// Set widget title
+	  // Set widget title
     widget.find(".adk-title").html( options["title"] );
 
 
@@ -74,6 +76,12 @@
 		
 		// Set widget size
 		widget.height( options['height'] ).width( options['width'] );
+
+    // Make sure that close button is visiable
+    var bottom;   
+    if( (bottom = $(window).height() - widget.height() ) < 0  ) {
+      widget.css("bottom",bottom);
+    }
 			
 	  // Hide widget by default
 		widget.css( options['position'],  "-"+options['width'] );
