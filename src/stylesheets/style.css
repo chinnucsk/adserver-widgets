@@ -11,7 +11,7 @@
 	width: 15px; 
 	height: 15px; 
 	margin: 3px 5px; 
-	background: url('http://nscontext.com/widgets/adk-close.png');
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAIAAAC0tAIdAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAchJREFUeNokkjmuwkAQRL/NsJvVrGJzREpGxBk4D8cgwBIn4CwEBBAiAiR2DGIROxj8n+0JRj3dNdXVNSMtl8ufs4QQiqL4/X6Px2NZliRJ3+/39XpdLhcC2VnCNE0OwWBQVVVqs9nsdruRDAQCkUgknU6nUqnj8Xi/371er4CVAtnFYjGdTqGkg8/nIzgcDufzOZfLUd3tdnDRX3Ab6Hg8hj6bzYImCfr9fl+vV3BoSCaTBCIcDj+fT1g5VyqVWCxGxz9nUXInOZ1OBEiQUbzZbGCiI0LRx1guer/fM248HgdHk1AoJOMAkeIsaIbDoa7rhmEMBoNut8sFZqAJTthTwkFECq3EjUYDT9rtNohms8l80MNIc9tCELYgWbacRUHTtPl8/ng8GAM+FwcX7smfzwe57HhMod/v93q9VqtVr9c7nQ5KoKPENRyUkEjTyWSSSCTy+fxqtYK1Wq3CNxqNMpkMeUaHkTcS+B+NRguFwna7RVK5XKYDkqCs1WrwAcUNmoMUjLher4vFImQ8Hi9CzbWcEtewmGHA2L+FLAbzlmRLpRI7NIhhB4StDEcVl6GTUMwl9w8iiRlwExwZZABy/yDySP4LMAANWS3U5e1VVgAAAABJRU5ErkJggg==);
 }
 
 .adk-position-right .adk-top .close { 
