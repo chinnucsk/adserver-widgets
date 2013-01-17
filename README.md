@@ -11,8 +11,8 @@ Website widgets:
 In website HEAD load all require resources: jquery, stylesheets and adserver-widgets.
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
-    <link rel="stylesheet" type="text/css" href="http://www.nscontext.com/widgets/style.css" />
-    <script type="text/javascript" src="http://www.nscontext.com/widgets/widgets.js" ></script>
+    <link rel="stylesheet" type="text/css" href="http://adserver.netsprint.eu/widgets/style.css" />
+    <script type="text/javascript" src="http://adserver.netsprint.eu/widgets/widgets.js" ></script>
 
 You can use those resources from our server or download them and place on your server directly.
 
@@ -58,8 +58,8 @@ Slide Out placement have several parameters that you can use to customize the us
 In website HEAD load all require resources: jquery, stylesheets and adserver-widgets.
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
-    <link rel="stylesheet" type="text/css" href="http://www.nscontext.com/widgets/style.css" />
-    <script type="text/javascript" src="http://www.nscontext.com/widgets/widgets.js" ></script>
+    <link rel="stylesheet" type="text/css" href="http://adserver.netsprint.eu/widgets/style.css" />
+    <script type="text/javascript" src="http://adserver.netsprint.eu/widgets/widgets.js" ></script>
 
 You can use those resources from our server or download them and place on your server directly.
 
@@ -69,17 +69,15 @@ Also in head configure the placement:
       //<![CDATA[
         jQuery.noConflict();
         (function($) {
-            $(document).ready( function() {
-              $().ns_slideout({
-                 $().na_onimage({
-                    selector: "img",
-                    prid: "6347",
-                    caid: "97019",
-                    plid: "32324",
-                    maxAds: "1",
-                    color: "0000bb",
-                    bannedShows: 1
-                  });
+            $(document).ready( function() {    
+              $().na_onimage({
+                selector: "img",
+                prid: "6347",
+                caid: "97019",
+                plid: "32324",
+                maxAds: "1",
+                color: "0000bb",
+                bannedShows: 1
               });
             });
         })(jQuery);
