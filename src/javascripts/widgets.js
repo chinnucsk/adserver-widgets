@@ -79,6 +79,7 @@
       maxAds: "3", 
       bannedShows: 0,
       capping: 0,
+      adserver: "adkontekst"
     }, shownAds = 0;
         
     /* dont do anything withour prid & caid */
@@ -89,6 +90,11 @@
     var options = $.extend(defaults, options);    
         
     var cookie = CookieCapping.create("onimage_counter", options.bannedShows, options.capping);
+
+    //we dont really like IE7
+    if ( navigator.appVersion.indexOf("MSIE 7.") != -1) {
+      return;
+    }
         
     // dont show if user dont want to see
     if( ! cookie.canShow() ) {
@@ -138,9 +144,25 @@
         frame: "FFFFFF",
         color: options.color
       };
+
+      var adserver = ({
+        "adkontekst": {
+          domain: "adsearch.adkontekst.pl",
+          prefix: "AKPL"
+        },
+        "interia": {
+          domain: "emisja.adsearch.pl",
+          prefix: "default"
+        },
+        "pp": {
+          domain: "emisja.pp.ns.adkontekst.pl",
+          prefix: "default"
+        }
+      })[options.adserver];
          
       /* adkontekst placement */
-      var placement = "http://adsearch.adkontekst.pl/_/ads0/?QAPS_AKPL=--"+
+      var placement = "http://"+adserver.domain+"/_/ads0/?QAPS_"+
+        adserver.prefix+"=--"+
         options["prid"]+"-"+options["caid"]+
         "-"+colors.color+","+colors.bg+","+colors.text+","+colors.color+","+colors.frame+","+colors.bg+","+colors.frame+","+
         ads.width+",100,"+ads.rows+","+ads.cols+",2,2,2,2,t,1,3,1,2,4,t,"+options.plid+",f,--&noChache=false";
@@ -156,12 +178,18 @@
       wrapper.css( {
         float: image.css("float"),
         width: Math.max( image.width(), image.attr("width")),
-        height: Math.max(image.height(), image.attr("height")),
-        margin: image.css("margin"),
-        padding: image.css("padding"),
-        outline: image.css("outline")
+        height: Math.max(image.height(), image.attr("height"))
       } );
-
+      /* copy other props */
+      
+      var cssprops = ["margin-top","margin-right", "margin-bottom", "margin-left",
+                      "padding-top","padding-right", "padding-bottom", "padding-left",
+                      "outline-top","outline-right", "outline-bottom", "outline-left"];
+      
+      $.each(cssprops, function(index,propname) {
+        wrapper.css(propname, image.css(propname) );
+      });
+      
       /* restet style for image */ 
       image.css("margin",0);
       image.css("padding",0);
@@ -187,10 +215,10 @@
 
       /* active checking - not best but it works on IE */
       (function watchCloseButton(){
-        if( wrapper.find("div")[0] )
-          wrapper.find("div")[0].appendChild(button[0]);
+        if( wrapper.find("iframe")[0] )
+          wrapper.find("iframe")[0].parentNode.appendChild(button[0]);
         else
-          setTimeout(watchCloseButton,1000);
+          setTimeout(watchCloseButton,500);
       })();
 
     };
@@ -260,10 +288,21 @@
     });
 
     // Insert Ad Script
-    var script = document.createElement("script"); 
-    script.setAttribute("type", "text/javascript"); 
-    script.setAttribute("src", options["placement"]); 
-    widget.find('.adk-adcode')[0].appendChild(script);
+    var placement = options["placement"];
+    if( ! $.isArray(placement) ){ 
+      var script = document.createElement("script"); 
+      script.setAttribute("type", "text/javascript"); 
+      script.setAttribute("src", placement); 
+      widget.find('.adk-adcode')[0].appendChild(script);
+    } else {
+      $.each(placement, function(idx, plc) {
+        console.log(plc);
+        var script = document.createElement("script"); 
+        script.setAttribute("type", "text/javascript"); 
+        script.setAttribute("src", plc); 
+        widget.find('.adk-adcode')[0].appendChild(script);
+      } );
+    };  
 
     var on_scroll = function() {
       var distanceTop = parseInt( options['distanceTop']);
