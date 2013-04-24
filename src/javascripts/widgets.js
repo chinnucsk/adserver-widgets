@@ -1,14 +1,14 @@
 /*
 
-  nsContext widgets - ver 0.1.0
+  nsContext widgets - ver 1.0.0-pre1
 
-*/ 
-(function($) {  
-  "use strict";    
-  
-  /* Cookie Manager */ 
+*/
+(function($) {
+  "use strict";
+
+  /* Cookie Manager */
   var CookieCapping = {
-    
+
     set: function set(cookiekey,value) {
       var exdate = new Date();
       exdate.setDate( exdate.getDate() + 1 );
@@ -30,9 +30,9 @@
       }
       return val
     },
-    
+
     /*  Create capping manager */
-    create: function create( cookiekey, bannedshows, capping ) { 
+    create: function create( cookiekey, bannedshows, capping ) {
       var cookie_bannedshows = cookiekey + "_bannedshows",
           cookie_showscount = cookiekey + "_showscount";
 
@@ -56,16 +56,16 @@
             showscount += 1;
             CookieCapping.set( cookie_showscount, showscount );
           };
-          
+
           return true;
         }
       }
-      
+
     }
     /* */
   };
-  
-  
+
+
 
   $.fn.na_onimage = function(options) {
     "use strict";
@@ -76,20 +76,26 @@
       height: "100",
       color: "FF0000",
       plid: "0",
-      maxAds: "3", 
+      maxAds: "3",
       bannedShows: 0,
       capping: 0,
+      adserver: "adkontekst"
     }, shownAds = 0;
-        
+
     /* dont do anything withour prid & caid */
     if( options["prid"] === undefined || options['caid'] === undefined ) {
       return;
     }
 
-    var options = $.extend(defaults, options);    
-        
+    var options = $.extend(defaults, options);
+
     var cookie = CookieCapping.create("onimage_counter", options.bannedShows, options.capping);
-        
+
+    //we dont really like IE7
+    if ( navigator.appVersion.indexOf("MSIE 7.") != -1) {
+      return;
+    }
+
     // dont show if user dont want to see
     if( ! cookie.canShow() ) {
       return this;
@@ -99,13 +105,13 @@
     if( options.maxAds > 5 ) {
       options.maxAds = 5;
     }
-        
+
     var afterLoad = function() {
       var image = $(this);
-      
+
       var width = image.width(),
         height = image.height();
-      
+
       /* Do nothing for too small images */
       if( height < 300 || width < 200 ) {
         return;
@@ -116,21 +122,21 @@
       } else {
         shownAds += 1;
       };
-         
+
       /* ads */
       var ads = {
         rows: "1",
         cols: "2",
         width: 580
       };
-      
+
       ads.width = width - 50;
-      
+
       if( width < 600 ) {
         ads.cols = 1;
       };
-        
-        
+
+
       /* colors */
       var colors = {
         bg: "FFFFFF",
@@ -138,20 +144,36 @@
         frame: "FFFFFF",
         color: options.color
       };
-         
+
+      var adserver = ({
+        "adkontekst": {
+          domain: "adsearch.adkontekst.pl",
+          prefix: "AKPL"
+        },
+        "interia": {
+          domain: "emisja.adsearch.pl",
+          prefix: "default"
+        },
+        "pp": {
+          domain: "emisja.pp.ns.adkontekst.pl",
+          prefix: "default"
+        }
+      })[options.adserver];
+
       /* adkontekst placement */
-      var placement = "http://adsearch.adkontekst.pl/_/ads0/?QAPS_AKPL=--"+
+      var placement = "http://"+adserver.domain+"/_/ads0/?QAPS_"+
+        adserver.prefix+"=--"+
         options["prid"]+"-"+options["caid"]+
         "-"+colors.color+","+colors.bg+","+colors.text+","+colors.color+","+colors.frame+","+colors.bg+","+colors.frame+","+
         ads.width+",100,"+ads.rows+","+ads.cols+",2,2,2,2,t,1,3,1,2,4,t,"+options.plid+",f,--&noChache=false";
-   
-   
+
+
       /* create wrapper */
       var wrapper = image.wrap(function() {
         return '<div class="na_onimage"/>';
-      }).parent();         
-      
-      
+      }).parent();
+
+
       /* copy important styles from image */
       wrapper.css( {
         float: image.css("float"),
@@ -162,23 +184,23 @@
         outline: image.css("outline")
       } );
 
-      /* restet style for image */ 
+      /* restet style for image */
       image.css("margin",0);
       image.css("padding",0);
       image.css("outline",0);
 
       /* add placement script */
-      var script = document.createElement("script"); 
-      script.setAttribute("type", "text/javascript"); 
-      script.setAttribute("src", placement); 
+      var script = document.createElement("script");
+      script.setAttribute("type", "text/javascript");
+      script.setAttribute("src", placement);
       wrapper[0].appendChild(script);
-      
+
       /* add close button */
-      var button = $("<div>"); 
-      button.addClass("close"); 
-      button.click( function(e){ 
+      var button = $("<div>");
+      button.addClass("close");
+      button.click( function(e){
       cookie.ban()
-        wrapper.find(".close, iframe").remove(); 
+        wrapper.find(".close, iframe").remove();
         e.preventDefault();
         e.stopPropagation();
       });
@@ -187,14 +209,14 @@
 
       /* active checking - not best but it works on IE */
       (function watchCloseButton(){
-        if( wrapper.find("div")[0] )
-          wrapper.find("div")[0].appendChild(button[0]);
+        if( wrapper.find("iframe")[0] )
+          wrapper.find("iframe")[0].parentNode.appendChild(button[0]);
         else
-          setTimeout(watchCloseButton,1000);
+          setTimeout(watchCloseButton,500);
       })();
 
     };
-        
+
     /* Check if image is loaded and if not wait for it */
     $(options.selector).each( function() {
       var img = $(this);
@@ -203,7 +225,7 @@
       else
         img.load( afterLoad );
     });
-        
+
   };
 
   $.fn.ns_slideout = function(options) {
@@ -216,21 +238,24 @@
       distanceTop: '900px',
       title: "REKLAMY",
       position: "right",
+      direction: "bottom",
       bannedShows: 0,
-      capping: 0
+      capping: 0,
+      autohide_timeout: 0,
+      show_timeout: 0
     };
-        
-    var options = $.extend(defaults, options); 
+
+    var options = $.extend(defaults, options);
 
     // Configure capping
     var cookie = CookieCapping.create("counter", options.bannedShows, options.capping);
-    
+
     // Build widget HTML
     var widget = $("<div class='adk-fixed'><div class='adk-top'><div class='close'></div><div class='adk-title'></div></div><div class='adk-adcode'></div></div>");
-        
+
     // dont show if user dont want to see
     if( cookie.canShow() ) {
-      $('body').append(widget); 
+      $('body').append(widget);
     } else {
       return this;
     }
@@ -240,54 +265,91 @@
 
     // Set Class name for different positions
     widget.addClass( "adk-position-"+options["position"] )
-        
+
     // Set widget size
     widget.height( options['height'] ).width( options['width'] );
 
     // Make sure that close button is visiable
-    var bottom;   
+    var bottom;
     if( (bottom = $(window).height() - widget.height() ) < 0  ) {
       widget.css("bottom",bottom);
     }
-            
+
     // Hide widget by default
     widget.css( options['position'],  "-"+options['width'] );
 
     // Remove widget on Close Button click
-    widget.find('.close').click( function(){ 
+    widget.find('.close').click( function(){
       cookie.ban()
-      $(this).closest(".adk-fixed").remove(); 
+      $(this).closest(".adk-fixed").remove();
     });
 
     // Insert Ad Script
-    var script = document.createElement("script"); 
-    script.setAttribute("type", "text/javascript"); 
-    script.setAttribute("src", options["placement"]); 
-    widget.find('.adk-adcode')[0].appendChild(script);
+    var placement = options["placement"];
+    if( ! $.isArray(placement) ){
+      placement = [placement];
+    };
 
+    $.each(placement, function(idx,src) {
+      var script = document.createElement("script");
+      script.setAttribute("type", "text/javascript");
+      script.setAttribute("src", src);
+      widget.find('.adk-adcode')[0].appendChild(script);
+    });
+
+
+    /* autoshow after certain time */
+    var can_show = true;
+
+    if( options["show_timeout"] > 0 ) {
+      can_show = false;
+      setTimeout(function() {
+        can_show = true;
+        on_scroll();
+      }, Number( options["show_timeout"] ) * 1000 );
+    };
+
+    /* show widget only on scroll */
     var on_scroll = function() {
       var distanceTop = parseInt( options['distanceTop']);
 
       var animation = {}
       animation[ options["position"] ] = 0;
 
-      if( $(window).scrollTop() > distanceTop || 
-          distanceTop == 0  || 
-          $(window).height() === $(document).height() ) {
-        
+      if( ( $(window).scrollTop() > distanceTop ||
+          distanceTop == 0  ||
+          $(window).height() === $(document).height() ) && can_show ) {
+
         widget.animate( animation ,300);
       } else {
 
-        animation[ options["position"] ] = "-"+options["width"]; 
+        if(options["position"] === "bottom") {
+          animation[ options["position"] ] = "-"+options["height"];
+        } else {
+          animation[ options["position"] ] = "-"+options["width"];
+        };
         widget.stop(true).animate( animation ,100);
       }
     };
+
+    // For position bottom set proper orientation in page window
+    if(options["position"] === "bottom") {
+      var margin =  -widget.css("width").replace("px","")/2;
+      widget.css("margin-right", margin);
+    }
 
     // Show widget on certain page height
     $(window).scroll( on_scroll );
 
     // Show if page not high enough to have scroll
     on_scroll()
+
+    /* autohide widgeta after ceratain time */
+    if( options["autohide_timeout"] > 0 ) {
+      setTimeout(function() {
+        widget.fadeOut();
+      }, Number( options["autohide_timeout"] ) * 1000 );
+    }
 
     return this;
   };
